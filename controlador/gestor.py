@@ -35,6 +35,33 @@ class GestorEstudiantes:
         """Elimina un estudiante de la base de datos."""
         modelo.eliminar_estudiante(correo, self.nombre_bd)
 
-    def consultar_por_nota(self, umbral: float = 4.0) -> list:
+    def consultar_por_nota(self, umbral: float) -> list:
         """Devuelve una lista de estudiantes con nota mayor o igual al umbral."""
         return modelo.consultar_por_nota(umbral, self.nombre_bd)
+
+    def eliminar_por_nota(self, limite: float) -> None:
+        """
+        Elimina todos los estudiantes cuya nota sea menor al valor especificado.
+
+        Utiliza:
+        DELETE FROM estudiantes WHERE nota < ?
+        """
+        modelo.eliminar_por_nota(limite, self.nombre_bd)
+
+    def listar_ordenados_por_nota(self) -> list:
+        """
+        Retorna los estudiantes ordenados de forma descendente por nota.
+
+        Utiliza:
+        SELECT * FROM estudiantes ORDER BY nota DESC
+        """
+        return modelo.listar_ordenados_por_nota(self.nombre_bd)
+
+    def buscar_por_nombre(self, parte_nombre: str) -> list:
+        """
+        Busca estudiantes cuyo nombre contenga una cadena parcial.
+
+        Utiliza:
+        SELECT * FROM estudiantes WHERE nombre LIKE '%<parte_nombre>%'
+        """
+        return modelo.buscar_por_nombre(parte_nombre, self.nombre_bd)

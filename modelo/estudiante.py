@@ -7,7 +7,6 @@ Cumple el principio de Responsabilidad Única (S).
 import sqlite3
 from pathlib import Path
 
-
 NOMBRE_BD = "estudiantes.db"
 
 
@@ -79,11 +78,53 @@ def eliminar_estudiante(correo: str, nombre_bd: str = NOMBRE_BD) -> None:
     conn.close()
 
 
-def consultar_por_nota(umbral: float = 4.0, nombre_bd: str = NOMBRE_BD) -> list:
+def consultar_por_nota(umbral: float, nombre_bd: str = NOMBRE_BD) -> list:
     """Retorna los estudiantes con nota mayor o igual al umbral."""
     conn = sqlite3.connect(nombre_bd)
     cur = conn.cursor()
     cur.execute("SELECT nombre, nota FROM estudiantes WHERE nota >= ?", (umbral,))
+    resultados = cur.fetchall()
+    conn.close()
+    return resultados
+
+def eliminar_por_nota(limite: float, nombre_bd: str = NOMBRE_BD) -> None:
+    """
+    Elimina los estudiantes cuya nota sea menor al valor especificado.
+
+    SQL: DELETE FROM estudiantes WHERE nota < ?
+    """
+    conn = sqlite3.connect(nombre_bd)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM estudiantes WHERE nota < ?", (limite,))
+    conn.commit()
+    print(f"[OK] Estudiantes con nota menor a {limite} eliminados.")
+    conn.close()
+
+
+def listar_ordenados_por_nota(nombre_bd: str = NOMBRE_BD) -> list:
+    """
+    Devuelve todos los estudiantes ordenados por nota descendente.
+
+    SQL: SELECT * FROM estudiantes ORDER BY nota DESC
+    """
+    conn = sqlite3.connect(nombre_bd)
+    cur = conn.cursor()
+    cur.execute("SELECT id, nombre, correo, nota FROM estudiantes ORDER BY nota DESC")
+    registros = cur.fetchall()
+    conn.close()
+    return registros
+
+
+def buscar_por_nombre(parte_nombre: str, nombre_bd: str = NOMBRE_BD) -> list:
+    """
+    Busca estudiantes cuyo nombre contenga una subcadena específica.
+
+    SQL: SELECT * FROM estudiantes WHERE nombre LIKE ?
+    Ejemplo: '%ana%' devolverá todos los nombres que contengan 'ana'.
+    """
+    conn = sqlite3.connect(nombre_bd)
+    cur = conn.cursor()
+    cur.execute("SELECT id, nombre, correo, nota FROM estudiantes WHERE nombre LIKE ?", (f"%{parte_nombre}%",))
     resultados = cur.fetchall()
     conn.close()
     return resultados

@@ -13,7 +13,10 @@ def mostrar_menu():
     print("2. Listar estudiantes")
     print("3. Actualizar nota")
     print("4. Eliminar estudiante")
-    print("5. Consultar estudiantes con nota >= 4.0")
+    print("5. Consultar estudiantes con nota especificada")
+    print("6. Eliminar estudiantes con nota menor a un valor")
+    print("7. Mostrar estudiantes ordenados por nota descendente")
+    print("8. Buscar estudiante por nombre")
     print("0. Salir")
 
 
@@ -47,11 +50,34 @@ def main():
             gestor.eliminar_estudiante(correo)
 
         elif opcion == "5":
-            umbral = float(input("Ingrese la nota mínima (ej. 4.0): "))
+            umbral = float(input("Ingrese la nota : "))
             destacados = gestor.consultar_por_nota(umbral)
             print("\n[ESTUDIANTES DESTACADOS]")
             for est in destacados:
                 print(f"{est[0]} | Nota: {est[1]}")
+
+        elif opcion == "6":
+            # DELETE avanzado
+            limite = float(input("Eliminar estudiantes con nota menor a: "))
+            gestor.eliminar_por_nota(limite)
+
+        elif opcion == "7":
+            # ORDER BY DESC
+            estudiantes = gestor.listar_ordenados_por_nota()
+            print("\n[ESTUDIANTES ORDENADOS POR NOTA DESCENDENTE]")
+            for est in estudiantes:
+                print(f"{est[1]} | {est[2]} | Nota: {est[3]}")
+
+        elif opcion == "8":
+            # LIKE para búsqueda parcial
+            parte = input("Ingrese parte del nombre a buscar: ")
+            resultados = gestor.buscar_por_nombre(parte)
+            print("\n[RESULTADOS DE BÚSQUEDA]")
+            if resultados:
+                for est in resultados:
+                    print(f"{est[1]} | {est[2]} | Nota: {est[3]}")
+            else:
+                print("No se encontraron estudiantes con ese patrón.")
 
         elif opcion == "0":
             print("Saliendo del sistema...")
