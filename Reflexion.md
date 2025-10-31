@@ -36,7 +36,7 @@ Esto me permitió comprobar que la base de datos se modifica realmente y que los
 ## ¿Qué mejorarías si tuvieras que ampliar el sistema?
 
 Si ampliara el proyecto, implementaría:
-- Una interfaz gráfica con **Tkinter** o **PyQt**.
+- Una interfaz gráfica **(GUI)**.
 - Un sistema de **validación más robusto** (por ejemplo, evitar notas fuera de rango).
 - Nuevas funcionalidades como exportar reportes a PDF.
 - Y posiblemente integrar un **ORM (como SQLAlchemy)** para manejar la base de datos con clases en lugar de consultas SQL directas.
